@@ -1,6 +1,6 @@
 ## Interface: 50400
 ## Title: LFR-AutoQ
 ## Author: Maczuga
-## Version: 100
+## Version: 101
 
 Main.lua
