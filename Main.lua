@@ -23,7 +23,7 @@ function QueueSection(i)
   local _, killed = GetLFGDungeonNumEncounters(id)
 
   if not (pLvl < min or pLvl > max) then
-      if killed == 3 and IsLFGDungeonJoinable(id) then
+      if killed < 3 and IsLFGDungeonJoinable(id) then
         AddonLog("Queueing to: " .. name)
         SetLFGDungeon(LE_LFG_CATEGORY_LFR, id)
       end
