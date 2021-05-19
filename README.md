@@ -22,4 +22,4 @@ You can also use sections:
 
 Sections can be combined like roles. To queue for MSV, HoF, ToT and SoO (for example you don't wanna queue for ToES, because you wanna complete The Fear Itself quest soon) as all available roles:
 
-`alfr all msv hof tot soo` (order is whatever you want)
+`/alfr all msv hof tot soo` (order is whatever you want)
