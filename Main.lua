@@ -13,15 +13,18 @@ local tiers = {
 
 SLASH_LFR_AUTOQ1 = "/alfr"
 
+function AddonLog(msg)
+  print("[LFR-AutoQ] " .. msg)
+end
 function QueueSection(i)
   local pLvl = UnitLevel("player")
 
   local id, name, _, _, min, max = GetRFDungeonInfo(i)
-  local total, killed = GetLFGDungeonNumEncounters(id)
+  local _, killed = GetLFGDungeonNumEncounters(id)
 
   if not (pLvl < min or pLvl > max) then
-      if killed ~= total and IsLFGDungeonJoinable(id) then
-        print("Queueing to: " .. name)
+      if killed == 3 and IsLFGDungeonJoinable(id) then
+        AddonLog("Queueing to: " .. name)
         SetLFGDungeon(LE_LFG_CATEGORY_LFR, id)
       end
   end
@@ -51,10 +54,10 @@ SlashCmdList["LFR_AUTOQ"] = function(arg)
       QueueSection(i)
     end
   else
-    for key, value in pairs(tiers) do
-      if string.find(arg, " " .. key .. " ") then
-        for i = 1, #value do
-          QueueSection(value[i])
+    for shortcut, sectionIds in pairs(tiers) do
+      if string.find(arg, " " .. shortcut .. " ") then
+        for i = 1, #sectionIds do
+          QueueSection(sectionIds[i])
         end
       end
     end
