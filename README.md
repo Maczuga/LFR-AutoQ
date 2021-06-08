@@ -1,6 +1,9 @@
 
 # Auto LFR queuing addon for 5.4 (or even past expansions)
 
+## Important - read below
+WoW has a limit of 2 LFR wings join per 12(?) seconds. You can still queue using a macro, however you have to press it every 12 seconds to trigger the queue. You can also just spam the macro / keep pasting the command in chat until there is no addon messages in chat.
+
 ## Commands
 `/alfr all` - queues you to all unfinished (or partially done) wings with all avaiable to your class specs
 
