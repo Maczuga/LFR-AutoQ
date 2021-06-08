@@ -1,4 +1,4 @@
-local version = select(4, GetBuildInfo());
+-- local version = select(4, GetBuildInfo());
 
 local tiers = {
   -- Cata
@@ -13,19 +13,28 @@ local tiers = {
 
 SLASH_LFR_AUTOQ1 = "/alfr"
 
-function AddonLog(msg)
-  print("[LFR-AutoQ] " .. msg)
+local function AddonLog(...)
+  print("[LFR-AutoQ] ", ...)
 end
-function QueueSection(i)
+
+local function QueueSection(i)
   local pLvl = UnitLevel("player")
 
   local id, name, _, _, min, max = GetRFDungeonInfo(i)
   local _, killed = GetLFGDungeonNumEncounters(id)
 
+  -- SoO has 2 wings with 4 bosses
+  local maxKilled = i >= 12 and i <= 13 and 4 or 3
+
   if not (pLvl < min or pLvl > max) then
-      if killed < 3 and IsLFGDungeonJoinable(id) then
-        AddonLog("Queueing to: " .. name)
-        SetLFGDungeon(LE_LFG_CATEGORY_LFR, id)
+      if killed < maxKilled and IsLFGDungeonJoinable(id) then
+        local mode, subMode = GetLFGMode(LE_LFG_CATEGORY_RF, id);
+        if mode == nil then
+          AddonLog("Queueing to: " .. name)
+          ClearAllLFGDungeons(LE_LFG_CATEGORY_RF)
+          SetLFGDungeon(LE_LFG_CATEGORY_RF, id)
+          JoinSingleLFG(LE_LFG_CATEGORY_RF, id)
+        end
       end
   end
 end
@@ -44,9 +53,7 @@ SlashCmdList["LFR_AUTOQ"] = function(arg)
     asDPS = true
   end
 
-
-  ClearAllLFGDungeons(LE_LFG_CATEGORY_LFR)
-  SetLFGRoles(LE_LFG_CATEGORY_LFR, asTank, asHeal, asDPS)
+  SetLFGRoles(LE_LFG_CATEGORY_RF, asTank, asHeal, asDPS)
 
   -- Sections
   if string.find(arg, "full") then
@@ -62,6 +69,4 @@ SlashCmdList["LFR_AUTOQ"] = function(arg)
       end
     end
   end
-
-  JoinLFG(LE_LFG_CATEGORY_LFR)
 end
